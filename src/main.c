@@ -7,11 +7,10 @@ int main(int argc, const char* argv[]) {
   Chunk chunk;
   initChunk(&chunk);
 
-  // add a test opcode
-  int constant = addConstant(&chunk, 1.2);
-  writeChunk(&chunk, OP_CONSTANT, 123);
-  writeChunk(&chunk, constant, 123);
-  writeChunk(&chunk, OP_RETURN, 123);
+  // add a test opcodes
+  writeConstant(&chunk, 1.2, 123);
+  writeConstant(&chunk, 200, 124);
+  writeChunk(&chunk, OP_RETURN, 124);
 
   // show opcode
   disassembleChunk(&chunk, "test chunk");

@@ -53,6 +53,34 @@ int addConstant(Chunk* chunk, Value value) {
   return chunk->constants.count - 1;
 }
 
+// write constant
+void writeConstant(Chunk* chunk, Value value, int line) {
+  int index = addConstant(chunk, value);
+
+  // 1 byte can encode 256 different indices
+  // if we have more than that in a code chunk we need to use a longer index size
+  if (index < 256) {
+    // write a 1 byte constant
+    writeChunk(chunk, OP_CONSTANT, line);
+    writeChunk(chunk, (uint8_t)index, line); 
+  } else {
+    // write a longer byte constant
+    writeChunk(chunk, OP_CONSTANT_LONG, line);
+
+    // write first byte
+    writeChunk(chunk, (uint8_t)(index & 0xff), line);
+
+    // write second byte
+    // shifts index bits over by 8 (1 byte) and then takes the first 8 bits
+    // this is equivalent to getting the second 8 bits of the index
+    writeChunk(chunk, (uint8_t)((index >> 8) & 0xff), line);
+
+    // write third byte
+    // this is equivalent to getting the third 8 bits of the index
+    writeChunk(chunk, (uint8_t)((index >> 16) & 0xff), line);
+  }
+}
+
 // delete chunk and free memory
 void freeChunk(Chunk* chunk) {
   // free chunk

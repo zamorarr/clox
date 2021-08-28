@@ -6,6 +6,7 @@
 
 typedef enum {
   OP_CONSTANT,
+  OP_CONSTANT_LONG,
   OP_RETURN,
 } OpCode;
 
@@ -35,6 +36,9 @@ void writeChunk(Chunk* chunk, uint8_t byte, int line);
 // add constant to constants array
 // returns index in ValueArray where constant is
 int addConstant(Chunk* chunk, Value value);
+
+// write constant
+void writeConstant(Chunk* chunk, Value value, int line);
 
 // delete chunk and free memory
 void freeChunk(Chunk* chunk);
