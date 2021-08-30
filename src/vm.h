@@ -30,8 +30,8 @@ typedef enum {
 void initVM(VM* vm);
 void freeVM(VM* vm);
 
-// interpret code chunk
-InterpretResult interpret(VM* vm, Chunk* chunk);
+// interpret code source
+InterpretResult interpret(VM* vm, const char* source);
 
 // push/pop values onto stack
 void push(VM* vm, Value value);

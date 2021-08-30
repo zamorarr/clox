@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "common.h"
+#include "compiler.h"
 #include "debug.h"
 #include "vm.h"
 
@@ -118,13 +119,7 @@ static InterpretResult run(VM* vm) {
 }
 
 // interpret code chunk
-InterpretResult interpret(VM* vm, Chunk* chunk) {
-  // initialize vm code chunk
-  vm->chunk = chunk;
-
-  // initialize instruction pointer to first byte in code chunk
-  vm->ip = vm->chunk->code;
-
-  // execut result
-  return run(vm);
+InterpretResult interpret(VM* vm, const char* source) {
+  compile(vm, source);
+  return INTERPRET_OK;
 }
