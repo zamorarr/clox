@@ -120,6 +120,24 @@ static InterpretResult run(VM* vm) {
 
 // interpret code chunk
 InterpretResult interpret(VM* vm, const char* source) {
-  compile(vm, source);
-  return INTERPRET_OK;
+  // initialize chunk
+  Chunk chunk;
+  initChunk(&chunk);
+
+  // compile source to bytecodes in chunk
+  if (!compile(vm, source, &chunk)) {
+    freeChunk(&chunk);
+    return INTERPRET_COMPILE_ERROR;
+  }
+
+  // initialize chunk in VM
+  vm->chunk = &chunk;
+  vm->ip = vm->chunk->code;
+
+  // run vm
+  InterpretResult result = run(vm);
+
+  // free chunk
+  freeChunk(&chunk);
+  return result;
 }

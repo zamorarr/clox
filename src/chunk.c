@@ -59,7 +59,7 @@ void writeConstant(Chunk* chunk, Value value, int line) {
 
   // 1 byte can encode 256 different indices
   // if we have more than that in a code chunk we need to use a longer index size
-  if (index < 256) {
+  if (index <= UINT8_MAX) {
     // write a 1 byte constant
     writeChunk(chunk, OP_CONSTANT, line);
     writeChunk(chunk, (uint8_t)index, line); 
